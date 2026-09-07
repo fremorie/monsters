@@ -1,8 +1,11 @@
+import { Eye } from './Eye';
+import { Environment } from './Environment';
+
 export function Experience() {
     return (
-        <mesh>
-            <boxGeometry scale={100}/>
-            <meshBasicMaterial color="mediumpurple" />
-        </mesh>
-    )
+        <>
+            <Eye />
+            <Environment />
+        </>
+    );
 }
