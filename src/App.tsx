@@ -21,7 +21,6 @@ function App() {
                     far: 2000,
                     position: [1, 2, 3],
                 }}
-                flat
             >
                 <OrbitControls makeDefault />
                 <Suspense fallback={null}>

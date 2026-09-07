@@ -1,10 +1,5 @@
-import { useHelper } from '@react-three/drei';
-import {
-    type RefObject,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import { useHelper, Environment as EnvMap } from '@react-three/drei';
+import { type RefObject, useEffect, useRef, useState } from 'react';
 import {
     CameraHelper,
     DirectionalLightHelper,
@@ -63,6 +58,7 @@ export function Environment() {
                 shadow-mapSize={[1500, 1500]}
             />
             <ambientLight color={ambientColor} intensity={1.5} />
+            <EnvMap preset="studio" environmentIntensity={0.6} />
         </>
     );
 }
