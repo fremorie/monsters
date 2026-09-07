@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { shaderMaterial } from '@react-three/drei';
+import { extend, type ThreeElement } from '@react-three/fiber';
 
 import vertexShader from '../shaders/eye/vertex.glsl';
 import fragmentShader from '../shaders/eye/fragment.glsl';
@@ -22,3 +23,11 @@ export const EyeMaterial = shaderMaterial(
 );
 
 export type EyeMaterialImpl = InstanceType<typeof EyeMaterial>;
+
+extend({ EyeMaterial });
+
+declare module '@react-three/fiber' {
+    interface ThreeElements {
+        eyeMaterial: ThreeElement<typeof EyeMaterial>;
+    }
+}

@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
-import { useMemo } from 'react';
-import { EyeMaterial } from './materials/eyeMaterial';
+import { useRef } from 'react';
+import { EyeMaterial, type EyeMaterialImpl } from './materials/eyeMaterial';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -13,8 +14,14 @@ type GLTFResult = GLTF & {
 };
 
 export function Eye() {
-    const { nodes } = useGLTF('./eye.glb') as GLTFResult;
-    const eyeMaterial = useMemo(() => new EyeMaterial(), []);
+    const { nodes } = useGLTF('./eye.glb') as unknown as GLTFResult;
+    const eyeMaterialRef = useRef<EyeMaterialImpl>(null);
+
+    useFrame((state) => {
+        if (eyeMaterialRef.current) {
+            eyeMaterialRef.current.uTime = state.clock.elapsedTime;
+        }
+    });
 
     const controls = useControls({
         'Cornea material': folder({
@@ -40,11 +47,12 @@ export function Eye() {
                     ior={1.376}
                     iridescence={controls.iridescence}
                     thickness={controls.thickness}
-                    stencilBuffer={true}
                     color={controls.color}
                 />
             </mesh>
-            <mesh geometry={nodes.Eye.geometry} material={eyeMaterial} />
+            <mesh geometry={nodes.Eye.geometry}>
+                <eyeMaterial ref={eyeMaterialRef} key={EyeMaterial.key} />
+            </mesh>
         </group>
     );
 }
