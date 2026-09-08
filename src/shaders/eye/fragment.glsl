@@ -31,7 +31,7 @@ void main() {
     radius = pos.z < 0.0 ? 4.0 - radius : radius;
 
     if (radius < IRIS_RADIUS) {
-        float breathing = 0.5 + 0.5 * sin(uTime);
+        float breathing = 0.9;
         float pupilRadius = uPupilRadius + uPupilDilation * breathing;
         pupilRadius = clamp(pupilRadius, 0.02, IRIS_RADIUS - 0.08);
 
