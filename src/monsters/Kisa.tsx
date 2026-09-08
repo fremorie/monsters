@@ -4,8 +4,11 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
+import { BodyMaterial } from '../materials/bodyMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useEyeTracking } from '../hooks/useEyeTracking';
+
+const bodyMaterial = new BodyMaterial();
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -17,11 +20,6 @@ type GLTFResult = GLTF & {
         TopLid: THREE.Mesh;
     };
 };
-
-const bodyMaterial = new THREE.MeshStandardMaterial({
-    color: '#000000',
-    roughness: 1,
-});
 
 export function Kisa() {
     const { nodes } = useGLTF('./Kisa.glb') as unknown as GLTFResult;
