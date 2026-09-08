@@ -1,23 +1,23 @@
-import * as THREE from 'three'
-import {MeshTransmissionMaterial, useGLTF} from '@react-three/drei'
-import { type GLTF } from 'three-stdlib'
+import * as THREE from 'three';
+import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
+import { type GLTF } from 'three-stdlib';
+import { folder, useControls } from 'leva';
 
-import {EyeMaterial} from "../materials/eyeMaterial";
-import {folder, useControls} from "leva";
+import { EyeMaterial } from '../materials/eyeMaterial';
 
 type GLTFResult = GLTF & {
     nodes: {
-        Body: THREE.Mesh
-        CorneaLeft: THREE.Mesh
-        CorneaRight: THREE.Mesh
-        EyeLeft: THREE.Mesh
-        EyeLids: THREE.Mesh
-        EyeRight: THREE.Mesh
-    }
-}
+        Body: THREE.Mesh;
+        BottomLid: THREE.Mesh;
+        Corneas: THREE.Mesh;
+        EyeLeft: THREE.Mesh;
+        EyeRight: THREE.Mesh;
+        TopLid: THREE.Mesh;
+    };
+};
 
 export function Kisa() {
-    const { nodes } = useGLTF('./Kisa.glb') as unknown as GLTFResult
+    const { nodes } = useGLTF('./Kisa.glb') as unknown as GLTFResult;
 
     const controls = useControls({
         'Cornea material': folder({
@@ -32,14 +32,33 @@ export function Kisa() {
     return (
         <group dispose={null}>
             <mesh
+                castShadow
+                receiveShadow
                 geometry={nodes.Body.geometry}
                 material={nodes.Body.material}
                 position={[0, 5.161, -0.014]}
             >
                 <meshStandardMaterial color="#000000" roughness={1} />
             </mesh>
+
             <mesh
-                geometry={nodes.CorneaLeft.geometry}
+                geometry={nodes.TopLid.geometry}
+                position={[1.115, 6.133, 4.862]}
+                rotation={[-0.2, 0, 0]}
+            >
+                <meshStandardMaterial color="#000000" roughness={1} />
+            </mesh>
+
+            <mesh
+                geometry={nodes.BottomLid.geometry}
+                position={[1.115, 6.133, 4.862]}
+                rotation={[0.5, 0, 0]}
+            >
+                <meshStandardMaterial color="#000000" roughness={1} />
+            </mesh>
+
+            <mesh
+                geometry={nodes.Corneas.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
                 <MeshTransmissionMaterial
@@ -53,34 +72,14 @@ export function Kisa() {
                     color={controls.color}
                 />
             </mesh>
-            <mesh
-                geometry={nodes.CorneaRight.geometry}
-                position={[-1.095, 6.133, 4.862]}
-            >
-                <MeshTransmissionMaterial
-                    transparent
-                    depthWrite={true}
-                    transmission={controls.transmission}
-                    roughness={controls.roughness}
-                    ior={1.376}
-                    iridescence={controls.iridescence}
-                    thickness={controls.thickness}
-                    color={controls.color}
-                />
-            </mesh>
+
             <mesh
                 geometry={nodes.EyeLeft.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
                 <eyeMaterial key={EyeMaterial.key} />
             </mesh>
-            <mesh
-                geometry={nodes.EyeLids.geometry}
-                position={[1.115, 6.133, 4.862]}
-                scale={1.099}
-            >
-                <meshStandardMaterial color="#000000" roughness={1} />
-            </mesh>
+
             <mesh
                 geometry={nodes.EyeRight.geometry}
                 position={[-1.095, 6.133, 4.862]}
@@ -88,8 +87,7 @@ export function Kisa() {
                 <eyeMaterial key={EyeMaterial.key} />
             </mesh>
         </group>
-    )
+    );
 }
 
-useGLTF.preload('./Kisa.glb')
-
+useGLTF.preload('./Kisa.glb');
