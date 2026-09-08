@@ -5,6 +5,7 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 import { useRef } from 'react';
 import { EyeMaterial, type EyeMaterialImpl } from './materials/eyeMaterial';
+import { useEyeMaterialControls } from './useEyeMaterialControls';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -15,11 +16,13 @@ type GLTFResult = GLTF & {
 
 export function Eye() {
     const { nodes } = useGLTF('./eye.glb') as unknown as GLTFResult;
-    const eyeMaterialRef = useRef<EyeMaterialImpl>(null);
+    const materialRef = useRef<EyeMaterialImpl>(null);
+
+    useEyeMaterialControls(materialRef);
 
     useFrame((state) => {
-        if (eyeMaterialRef.current) {
-            eyeMaterialRef.current.uTime = state.clock.elapsedTime;
+        if (materialRef.current) {
+            materialRef.current.uTime = state.clock.elapsedTime;
         }
     });
 
@@ -51,7 +54,7 @@ export function Eye() {
                 />
             </mesh>
             <mesh geometry={nodes.Eye.geometry}>
-                <eyeMaterial ref={eyeMaterialRef} key={EyeMaterial.key} />
+                <eyeMaterial ref={materialRef} key={EyeMaterial.key} />
             </mesh>
         </group>
     );

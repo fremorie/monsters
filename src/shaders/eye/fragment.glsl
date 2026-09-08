@@ -1,64 +1,56 @@
 uniform float uTime;
+
 uniform vec3 uBaseColor;
 uniform vec3 uNoiseColor;
-uniform vec3 uInnerColor;
-uniform vec3 uLineColor;
-uniform float uLineFactor;
-uniform float uNoiseFrequency;
-uniform float uNoiseStrength;
+uniform vec3 uCenterColor;
+uniform vec3 uStripesColor;
+uniform float uStripesNoiseStrength;
+uniform float uVignetteStrength;
+uniform float uPupilRadius;
 
 varying vec3 vPosition;
 
 #include "../includes/fbm.glsl"
 
-const float PI = 3.1415926535;
-
 void main() {
-    vec3 eyeColor = vec3(1.0); // white
-    vec3 pupilColor = vec3(0.0); // black
-
-    float angle = atan(vPosition.x, vPosition.y);
-
-    // base color
     vec3 pos = normalize(vPosition);
-    float d = length(pos.xy);
-    // Only render the pupil on the front side of the sphere
-    d = pos.z < 0.0 ? 2.0 - d : d;
+    vec2 uv = pos.xy / 0.5;
 
-    float dBase = d;
-    float baseEye = smoothstep(0.355, 0.411, d);
-    vec3 color = mix(uBaseColor, eyeColor, baseEye);
+    vec3 background = vec3(1.0);
+    vec3 color = vec3(1.0);
 
-    // animation
-    float ss = 0.5 + 0.5 * sin(4.0 * uTime);
-    float animation = 1.0 + 0.1 * ss * clamp(1.0 - d, 0.0, 1.0);
-    d *= animation;
+    float r = sqrt(dot(uv, uv));
+    float a = atan(uv.y, uv.x);
 
-    // add fbm noise to the base color
-    vec3 p = normalize(vPosition);
-    float u = atan(p.z, p.x) / (2.0 * PI) + 0.5;
-    float v = asin(p.y) / PI + 0.5;
-    float fbmNoise = fbm(uNoiseFrequency * vec2(u, v));
-    color = mix(color, uNoiseColor, fbmNoise * uNoiseStrength);
+    r = pos.z < 0.0 ? 4.0 - r : r;
 
-    // inner subtle color around pupil
-    float innerCircle = 1.0 - smoothstep(0.195, 0.368, d);
-    color = mix(color, uInnerColor,  innerCircle);
+    if (r < 0.8) {
+        color = uBaseColor;
+        float f = fbm(5.0 * uv);
+        color = mix(color, uNoiseColor, f);
 
-    // black lines
-    float blackLines = fbm(vec2(d, 100.0 * angle)) - baseEye;
-    blackLines = smoothstep(0.5, 1.0, blackLines);
-    color = mix(color, uLineColor, blackLines * uLineFactor);
+        f = 1.0 - smoothstep(0.2, 0.5, r);
+        color = mix(color, uCenterColor, f);
 
-    // // vignette
-    float vignetteCircle = smoothstep(0.281, 0.389, dBase)- baseEye;
-    color *= 1.0 - vignetteCircle;
+        a += 0.05 * fbm(20.0 * uv);
 
-    // pupil
-    float pupil = smoothstep(0.216, 0.238, d);
-    color *= pupil; // black
+        f = smoothstep(0.3, 1.0, fbm(vec2(6.0 * r, 20.0 * a)));
+        color = mix(color, uStripesColor, f);
 
-    gl_FragColor = vec4(color, 1.0);
+        f = smoothstep(0.4, 0.9, fbm(vec2(10.0 * r, 15.0 * a)));
+        color *= 1.0 - uStripesNoiseStrength * f;
+
+        f = smoothstep(0.6, 0.8, r);
+        color *= 1.0 - uVignetteStrength * f;
+
+        f = smoothstep(uPupilRadius, uPupilRadius + 0.05, r);
+        color *= f;
+
+        f = smoothstep(0.7, 0.8, r);
+        color = mix(color, vec3(1.0), f);
+    }
+
+    gl_FragColor = vec4(color * background, 1.0);
 
     #include <tonemapping_fragment>
     #include <colorspace_fragment>

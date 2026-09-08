@@ -5,15 +5,25 @@ import { extend, type ThreeElement } from '@react-three/fiber';
 import vertexShader from '../shaders/eye/vertex.glsl';
 import fragmentShader from '../shaders/eye/fragment.glsl';
 
+export const EYE_DEFAULTS = {
+    baseColor: '#000000',
+    noiseColor: '#317c67',
+    centerColor: '#b4a072',
+    stripesColor: '#608079',
+    stripesNoiseStrength: 0.5,
+    pupilRadius: 0.3,
+    vignetteStrength: 1,
+};
+
 const uniforms = {
     uTime: 0,
-    uBaseColor: new THREE.Color('#259ac1'),
-    uNoiseColor: new THREE.Color('#b1a328'),
-    uInnerColor: new THREE.Color('#30545e'),
-    uLineColor: new THREE.Color('#276779'),
-    uLineFactor: 0.5,
-    uNoiseFrequency: 15.0,
-    uNoiseStrength: 0.5,
+    uBaseColor: new THREE.Color(EYE_DEFAULTS.baseColor),
+    uNoiseColor: new THREE.Color(EYE_DEFAULTS.noiseColor),
+    uCenterColor: new THREE.Color(EYE_DEFAULTS.centerColor),
+    uStripesColor: new THREE.Color(EYE_DEFAULTS.stripesColor),
+    uStripesNoiseStrength: EYE_DEFAULTS.stripesNoiseStrength,
+    uVignetteStrength: EYE_DEFAULTS.vignetteStrength,
+    uPupilRadius: EYE_DEFAULTS.pupilRadius,
 };
 
 export const EyeMaterial = shaderMaterial(

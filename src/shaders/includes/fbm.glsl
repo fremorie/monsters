@@ -1,15 +1,13 @@
-// eye shader
 // https://iquilezles.org/
 // https://www.youtube.com/watch?v=emjuqqyq_qc&t=210s
 
-
 const mat2 m = mat2( 0.80,  0.60, -0.60,  0.80 );
 
-float hash( float n ) {
+float hash(float n) {
     return fract(sin(n)*43758.5453);
 }
 
-float noise( in vec2 x ) {
+float noise(in vec2 x) {
     vec2 i = floor(x);
     vec2 f = fract(x);
 
@@ -21,12 +19,13 @@ float noise( in vec2 x ) {
                mix( hash(n+57.0), hash(n+58.0),f.x),f.y);
 }
 
-float fbm( vec2 p ) {
+float fbm (vec2 p) {
     float f = 0.0;
-    f += 0.50000*noise( p ); p = m*p*2.02;
-    f += 0.25000*noise( p ); p = m*p*2.03;
-    f += 0.12500*noise( p ); p = m*p*2.01;
-    f += 0.06250*noise( p ); p = m*p*2.04;
-    f += 0.03125*noise( p );
-    return f/0.984375;
+    f += 0.5000 * noise(p); p *= m * 2.02;
+    f += 0.2500 * noise(p); p *= m * 2.03;
+    f += 0.1250 * noise(p); p *= m * 2.01;
+    f += 0.0625 * noise(p); p *= m * 2.04;
+    f /= 0.9375;
+
+    return f;
 }

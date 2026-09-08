@@ -1,0 +1,67 @@
+import { type RefObject, useEffect } from 'react';
+import { EYE_DEFAULTS, type EyeMaterialImpl } from './materials/eyeMaterial';
+import { folder, useControls } from 'leva';
+
+export function useEyeMaterialControls(
+    materialRef: RefObject<EyeMaterialImpl | null>,
+) {
+    const {
+        uBaseColor,
+        uNoiseColor,
+        uCenterColor,
+        uStripesColor,
+        uStripesNoiseStrength,
+        uPupilRadius,
+        uVignetteStrength,
+    } = useControls({
+        Eye: folder({
+            uBaseColor: EYE_DEFAULTS.baseColor,
+            uNoiseColor: EYE_DEFAULTS.noiseColor,
+            uCenterColor: EYE_DEFAULTS.centerColor,
+            uStripesColor: EYE_DEFAULTS.stripesColor,
+            uStripesNoiseStrength: {
+                value: EYE_DEFAULTS.stripesNoiseStrength,
+                min: 0,
+                max: 1,
+                step: 0.01,
+            },
+            uPupilRadius: {
+                value: EYE_DEFAULTS.pupilRadius,
+                min: 0,
+                max: 0.8,
+                step: 0.01,
+            },
+        }),
+        Vignette: folder({
+            uVignetteStrength: {
+                value: EYE_DEFAULTS.vignetteStrength,
+                min: 0,
+                max: 1,
+                step: 0.01,
+            },
+        }),
+    });
+
+    useEffect(() => {
+        if (materialRef.current) {
+            materialRef.current.uniforms.uBaseColor.value.set(uBaseColor);
+            materialRef.current.uniforms.uNoiseColor.value.set(uNoiseColor);
+            materialRef.current.uniforms.uCenterColor.value.set(uCenterColor);
+            materialRef.current.uniforms.uStripesColor.value.set(uStripesColor);
+            materialRef.current.uniforms.uStripesNoiseStrength.value =
+                uStripesNoiseStrength;
+            materialRef.current.uniforms.uVignetteStrength.value =
+                uVignetteStrength;
+            materialRef.current.uniforms.uPupilRadius.value = uPupilRadius;
+        }
+    }, [
+        uBaseColor,
+        uNoiseColor,
+        uCenterColor,
+        uStripesColor,
+        uStripesNoiseStrength,
+        uVignetteStrength,
+        uPupilRadius,
+        materialRef,
+    ]);
+}
