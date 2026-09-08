@@ -58,7 +58,7 @@ export function Environment() {
                 shadow-mapSize={[1500, 1500]}
             />
             <ambientLight color={ambientColor} intensity={1.5} />
-            <EnvMap preset="studio" environmentIntensity={0.6} />
+            <EnvMap preset="forest" environmentIntensity={0.6} />
         </>
     );
 }
