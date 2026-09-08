@@ -16,7 +16,7 @@ export function useBlink({
     topClosed = 0.15,
     bottomClosed = -0.15,
     duration = 0.2,
-    interval = 10,
+    interval = 4,
 }: BlinkOptions = {}) {
     const topEyeLidRef = useRef<THREE.Mesh>(null);
     const bottomEyeLidRef = useRef<THREE.Mesh>(null);
