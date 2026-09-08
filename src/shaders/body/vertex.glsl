@@ -1,7 +1,16 @@
+uniform float uTime;
+
 varying vec3 vPosition;
 
-void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+#include "../includes/fbm.glsl"
 
-    vPosition = position;
+void main() {
+    vec3 localSpacePosition = position;
+
+    float n = noise(localSpacePosition.xy * 0.6 + 0.7 * uTime);
+    localSpacePosition += normal * n * 0.35;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(localSpacePosition, 1.0);
+
+    vPosition = (modelMatrix * vec4(localSpacePosition, 1.0)).xyz;
 }
