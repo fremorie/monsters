@@ -5,7 +5,7 @@ import glsl from 'vite-plugin-glsl'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/eyes/',
+  base: '/monsters/',
   plugins: [
     react(),
     babel({ presets: [reactCompilerPreset()] }),
