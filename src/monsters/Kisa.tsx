@@ -5,6 +5,7 @@ import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
+import { useEyeTracking } from '../hooks/useEyeTracking';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -36,6 +37,7 @@ export function Kisa() {
     });
 
     const { topEyeLidRef, bottomEyeLidRef } = useBlink();
+    const { eyeLeftRef, eyeRightRef } = useEyeTracking();
 
     return (
         <group dispose={null}>
@@ -79,6 +81,7 @@ export function Kisa() {
             </mesh>
 
             <mesh
+                ref={eyeLeftRef}
                 geometry={nodes.EyeLeft.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
@@ -86,6 +89,7 @@ export function Kisa() {
             </mesh>
 
             <mesh
+                ref={eyeRightRef}
                 geometry={nodes.EyeRight.geometry}
                 position={[-1.095, 6.133, 4.862]}
             >
