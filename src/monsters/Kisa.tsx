@@ -4,6 +4,7 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
+import {useEffect, useMemo} from "react";
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -29,33 +30,38 @@ export function Kisa() {
         }),
     });
 
+    const bodyMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+        color: '#000000',
+        roughness: 1,
+    }), []);
+
+    useEffect(() => {
+        return bodyMaterial.dispose();
+    })
+
     return (
         <group dispose={null}>
             <mesh
                 castShadow
                 receiveShadow
                 geometry={nodes.Body.geometry}
-                material={nodes.Body.material}
                 position={[0, 5.161, -0.014]}
-            >
-                <meshStandardMaterial color="#000000" roughness={1} />
-            </mesh>
+                material={bodyMaterial}
+            />
 
             <mesh
                 geometry={nodes.TopLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[-0.2, 0, 0]}
-            >
-                <meshStandardMaterial color="#000000" roughness={1} />
-            </mesh>
+                material={bodyMaterial}
+            />
 
             <mesh
                 geometry={nodes.BottomLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[0.5, 0, 0]}
-            >
-                <meshStandardMaterial color="#000000" roughness={1} />
-            </mesh>
+                material={bodyMaterial}
+            />
 
             <mesh
                 geometry={nodes.Corneas.geometry}
