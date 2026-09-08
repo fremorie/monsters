@@ -4,17 +4,11 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
-import { BodyDepthMaterial, BodyMaterial } from '../materials/bodyMaterial';
+import { BodyMaterial } from '../materials/bodyMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useEyeTracking } from '../hooks/useEyeTracking';
-import { useFrame } from '@react-three/fiber';
 
 const bodyMaterial = new BodyMaterial();
-const bodyDepthMaterial = new BodyDepthMaterial();
-const eyeLidMaterial = new THREE.MeshStandardMaterial({
-    color: '#000000',
-    roughness: 1,
-});
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -43,11 +37,6 @@ export function Kisa() {
     const { topEyeLidRef, bottomEyeLidRef } = useBlink();
     const { eyeLeftRef, eyeRightRef } = useEyeTracking();
 
-    useFrame((state) => {
-        bodyMaterial.uTime = state.clock.elapsedTime;
-        bodyDepthMaterial.uTime = state.clock.elapsedTime;
-    });
-
     return (
         <group dispose={null}>
             <mesh
@@ -55,7 +44,6 @@ export function Kisa() {
                 geometry={nodes.Body.geometry}
                 position={[0, 5.161, -0.014]}
                 material={bodyMaterial}
-                customDepthMaterial={bodyDepthMaterial}
             />
 
             <mesh
@@ -63,7 +51,7 @@ export function Kisa() {
                 geometry={nodes.TopLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[-0.2, 0, 0]}
-                material={eyeLidMaterial}
+                material={bodyMaterial}
             />
 
             <mesh
@@ -71,7 +59,7 @@ export function Kisa() {
                 geometry={nodes.BottomLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[0.5, 0, 0]}
-                material={eyeLidMaterial}
+                material={bodyMaterial}
             />
 
             <mesh

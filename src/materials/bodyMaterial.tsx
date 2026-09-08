@@ -16,16 +16,12 @@ export const BodyMaterial = shaderMaterial(
     fragmentShader,
 );
 
-export const BodyDepthMaterial = shaderMaterial(uniforms, vertexShader);
-
 export type BodyMaterialImpl = InstanceType<typeof BodyMaterial>;
-export type BodyDepthMaterialImpl = InstanceType<typeof BodyDepthMaterial>;
 
-extend({ BodyMaterial, BodyDepthMaterial });
+extend({ BodyMaterial });
 
 declare module '@react-three/fiber' {
     interface ThreeElements {
         bodyMaterial: ThreeElement<typeof BodyMaterial>;
-        bodyDepthMaterial: ThreeElement<typeof BodyDepthMaterial>;
     }
 }
