@@ -6,14 +6,14 @@ import vertexShader from '../shaders/eye/vertex.glsl';
 import fragmentShader from '../shaders/eye/fragment.glsl';
 
 export const EYE_DEFAULTS = {
-    baseColor: '#8eb6d8',
+    baseColor: '#000000',
     noiseColor: '#317c67',
     centerColor: '#b4a072',
-    stripesColor: '#b7e2d9',
+    stripesColor: '#608079',
     stripesNoiseStrength: 0.5,
-    pupilRadius: 0.2,
+    pupilRadius: 0.3,
     pupilDilation: 0.15,
-    vignetteStrength: 0.5,
+    vignetteStrength: 1,
 };
 
 const uniforms = {
