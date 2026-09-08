@@ -12,6 +12,7 @@ export function useEyeMaterialControls(
         uStripesColor,
         uStripesNoiseStrength,
         uPupilRadius,
+        uPupilDilation,
         uVignetteStrength,
     } = useControls({
         Eye: folder({
@@ -25,10 +26,18 @@ export function useEyeMaterialControls(
                 max: 1,
                 step: 0.01,
             },
+        }),
+        Pupil: folder({
             uPupilRadius: {
                 value: EYE_DEFAULTS.pupilRadius,
+                min: 0.02,
+                max: 0.72,
+                step: 0.01,
+            },
+            uPupilDilation: {
+                value: EYE_DEFAULTS.pupilDilation,
                 min: 0,
-                max: 0.8,
+                max: 0.5,
                 step: 0.01,
             },
         }),
@@ -53,6 +62,7 @@ export function useEyeMaterialControls(
             materialRef.current.uniforms.uVignetteStrength.value =
                 uVignetteStrength;
             materialRef.current.uniforms.uPupilRadius.value = uPupilRadius;
+            materialRef.current.uniforms.uPupilDilation.value = uPupilDilation;
         }
     }, [
         uBaseColor,
@@ -62,6 +72,7 @@ export function useEyeMaterialControls(
         uStripesNoiseStrength,
         uVignetteStrength,
         uPupilRadius,
+        uPupilDilation,
         materialRef,
     ]);
 }

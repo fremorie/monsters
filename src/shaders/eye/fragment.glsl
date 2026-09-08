@@ -7,10 +7,15 @@ uniform vec3 uStripesColor;
 uniform float uStripesNoiseStrength;
 uniform float uVignetteStrength;
 uniform float uPupilRadius;
+uniform float uPupilDilation;
 
 varying vec3 vPosition;
 
 #include "../includes/fbm.glsl"
+
+const float IRIS_RADIUS = 0.8;
+const float RELAXED_PUPIL_RADIUS = 0.2;
+const float FIBRE_FOLLOW = 0.6;
 
 void main() {
     vec3 pos = normalize(vPosition);
@@ -19,35 +24,61 @@ void main() {
     vec3 background = vec3(1.0);
     vec3 color = vec3(1.0);
 
-    float r = sqrt(dot(uv, uv));
-    float a = atan(uv.y, uv.x);
+    float radius = length(uv);
+    float angle = atan(uv.y, uv.x);
+    vec2 direction = vec2(cos(angle), sin(angle));
 
-    r = pos.z < 0.0 ? 4.0 - r : r;
+    radius = pos.z < 0.0 ? 4.0 - radius : radius;
 
-    if (r < 0.8) {
+    if (radius < IRIS_RADIUS) {
+        float breathing = 0.5 + 0.5 * sin(uTime);
+        float pupilRadius = uPupilRadius + uPupilDilation * breathing;
+        pupilRadius = clamp(pupilRadius, 0.02, IRIS_RADIUS - 0.08);
+
+        pupilRadius *= 1.0 + 0.03 * (fbm(3.0 * direction + 17.0) - 0.5);
+
+        float irisCoord = (radius - pupilRadius) / (IRIS_RADIUS - pupilRadius);
+
+        float irisCompression =
+            (IRIS_RADIUS - pupilRadius) / (IRIS_RADIUS - RELAXED_PUPIL_RADIUS);
+
+        float squeezedRadius = mix(RELAXED_PUPIL_RADIUS, IRIS_RADIUS, irisCoord);
+        float patternRadius = mix(radius, squeezedRadius, FIBRE_FOLLOW);
+        vec2 patternPosition = direction * patternRadius;
+
+        float fibreDetail = mix(0.45, 1.0, clamp(irisCompression, 0.0, 1.0));
+
         color = uBaseColor;
-        float f = fbm(5.0 * uv);
-        color = mix(color, uNoiseColor, f);
+        float mask = fbm(5.0 * patternPosition);
+        color = mix(color, uNoiseColor, mask);
 
-        f = 1.0 - smoothstep(0.2, 0.5, r);
-        color = mix(color, uCenterColor, f);
+        mask = 1.0 - smoothstep(0.0, 0.5, irisCoord);
+        color = mix(color, uCenterColor, mask);
 
-        a += 0.05 * fbm(20.0 * uv);
+        float wobblyAngle = angle + 0.05 * fbm(20.0 * patternPosition);
 
-        f = smoothstep(0.3, 1.0, fbm(vec2(6.0 * r, 20.0 * a)));
-        color = mix(color, uStripesColor, f);
+        mask = smoothstep(0.3, 1.0, fbm(vec2(6.0 * patternRadius, 20.0 * wobblyAngle)));
+        color = mix(color, uStripesColor, mask * fibreDetail);
 
-        f = smoothstep(0.4, 0.9, fbm(vec2(10.0 * r, 15.0 * a)));
-        color *= 1.0 - uStripesNoiseStrength * f;
+        mask = smoothstep(0.4, 0.9, fbm(vec2(10.0 * patternRadius, 15.0 * wobblyAngle)));
+        color *= 1.0 - uStripesNoiseStrength * mask * fibreDetail;
 
-        f = smoothstep(0.6, 0.8, r);
-        color *= 1.0 - uVignetteStrength * f;
+        float collarette = exp(-16.0 * (irisCoord - 0.3) * (irisCoord - 0.3));
+        color *= 1.0 + 0.12 * collarette;
 
-        f = smoothstep(uPupilRadius, uPupilRadius + 0.05, r);
-        color *= f;
+        mask = 1.0 - smoothstep(0.0, 0.12, irisCoord);
+        color *= 1.0 - 0.45 * mask;
 
-        f = smoothstep(0.7, 0.8, r);
-        color = mix(color, vec3(1.0), f);
+        color *= mix(0.88, 1.0, clamp(irisCompression, 0.0, 1.0));
+
+        mask = smoothstep(0.6, IRIS_RADIUS, radius);
+        color *= 1.0 - uVignetteStrength * mask;
+
+        mask = smoothstep(pupilRadius, pupilRadius + 0.04, radius);
+        color *= mask;
+
+        mask = smoothstep(0.7, IRIS_RADIUS, radius);
+        color = mix(color, vec3(1.0), mask);
     }
 
     gl_FragColor = vec4(color * background, 1.0);
