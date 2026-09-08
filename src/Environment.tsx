@@ -10,6 +10,7 @@ import {
 import { useControls } from 'leva';
 
 import { useDebug } from './hooks/useDebug';
+import { BACKGROUND } from './constants';
 
 export function Environment() {
     const debug = useDebug();
@@ -19,7 +20,7 @@ export function Environment() {
 
     const { ambientColor, directionalColor } = useControls('Lights', {
         ambientColor: '#ffefd2',
-        directionalColor: '#fffaf1',
+        directionalColor: '#ffe6b4',
     });
 
     useEffect(() => {
@@ -45,20 +46,22 @@ export function Environment() {
                 ref={lightRef}
                 castShadow
                 color={directionalColor}
-                position={[5, 4, 5]}
-                intensity={1.5}
+                position={[22, 18, 30]}
+                intensity={6.5}
                 shadow-normalBias={0}
-                shadow-camera-left={-5}
-                shadow-camera-right={5}
-                shadow-camera-top={2}
-                shadow-camera-bottom={-4}
-                shadow-camera-near={-5}
-                shadow-camera-far={10}
-                shadow-radius={10}
-                shadow-mapSize={[1500, 1500]}
+                shadow-camera-left={-16}
+                shadow-camera-right={16}
+                shadow-camera-top={16}
+                shadow-camera-bottom={-16}
+                shadow-camera-near={20}
+                shadow-camera-far={90}
+                shadow-radius={3}
+                shadow-mapSize={[1024, 1024]}
             />
             <ambientLight color={ambientColor} intensity={1.5} />
-            <EnvMap preset="forest" environmentIntensity={0.6} />
+            <EnvMap preset="studio" environmentIntensity={0.2} />
+            <color attach="background" args={[BACKGROUND]} />
+            <fog attach="fog" args={[BACKGROUND, 75, 170]} />
         </>
     );
 }

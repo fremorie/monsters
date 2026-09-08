@@ -4,7 +4,7 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
-import {useEffect, useMemo} from "react";
+import { useEffect, useMemo } from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -30,14 +30,18 @@ export function Kisa() {
         }),
     });
 
-    const bodyMaterial = useMemo(() => new THREE.MeshStandardMaterial({
-        color: '#000000',
-        roughness: 1,
-    }), []);
+    const bodyMaterial = useMemo(
+        () =>
+            new THREE.MeshStandardMaterial({
+                color: '#000000',
+                roughness: 1,
+            }),
+        [],
+    );
 
     useEffect(() => {
         return bodyMaterial.dispose();
-    })
+    });
 
     return (
         <group dispose={null}>
