@@ -4,7 +4,7 @@ import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
 import { EyeMaterial } from '../materials/eyeMaterial';
-import { useEffect, useMemo } from 'react';
+import { useBlink } from '../hooks/useBlink';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -16,6 +16,11 @@ type GLTFResult = GLTF & {
         TopLid: THREE.Mesh;
     };
 };
+
+const bodyMaterial = new THREE.MeshStandardMaterial({
+    color: '#000000',
+    roughness: 1,
+});
 
 export function Kisa() {
     const { nodes } = useGLTF('./Kisa.glb') as unknown as GLTFResult;
@@ -30,30 +35,19 @@ export function Kisa() {
         }),
     });
 
-    const bodyMaterial = useMemo(
-        () =>
-            new THREE.MeshStandardMaterial({
-                color: '#000000',
-                roughness: 1,
-            }),
-        [],
-    );
-
-    useEffect(() => {
-        return bodyMaterial.dispose();
-    });
+    const { topEyeLidRef, bottomEyeLidRef } = useBlink();
 
     return (
         <group dispose={null}>
             <mesh
                 castShadow
-                receiveShadow
                 geometry={nodes.Body.geometry}
                 position={[0, 5.161, -0.014]}
                 material={bodyMaterial}
             />
 
             <mesh
+                ref={topEyeLidRef}
                 geometry={nodes.TopLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[-0.2, 0, 0]}
@@ -61,6 +55,7 @@ export function Kisa() {
             />
 
             <mesh
+                ref={bottomEyeLidRef}
                 geometry={nodes.BottomLid.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[0.5, 0, 0]}

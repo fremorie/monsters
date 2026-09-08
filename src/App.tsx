@@ -30,7 +30,11 @@ function App() {
                     position: CAMERA_POSITION,
                 }}
             >
-                <OrbitControls makeDefault maxPolarAngle={Math.PI / 2} target={CAMERA_TARGET} />
+                <OrbitControls
+                    makeDefault
+                    maxPolarAngle={Math.PI / 2}
+                    target={CAMERA_TARGET}
+                />
                 <Suspense fallback={null}>
                     <Experience />
                     <Preload all />
