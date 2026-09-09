@@ -15,6 +15,7 @@ import { useLightStore } from './store/useLightStore';
 import {
     getAmbientLightIntensity,
     getDirectionalLightIntensity,
+    getEnvironmentMapIntensity,
 } from './utils/light';
 
 export function Environment() {
@@ -23,6 +24,7 @@ export function Environment() {
 
     const ambientLightIntensity = getAmbientLightIntensity(brightness);
     const directionalLightIntensity = getDirectionalLightIntensity(brightness);
+    const environmentMapIntensity = getEnvironmentMapIntensity(brightness);
     const lightRef = useRef<DirectionalLight>(null);
     const shadowCameraRef = useRef<Camera>(null);
     const [hasShadowCamera, setHasShadowCamera] = useState(false);
@@ -71,7 +73,10 @@ export function Environment() {
                 color={ambientColor}
                 intensity={ambientLightIntensity}
             />
-            <EnvMap preset="studio" environmentIntensity={0.2} />
+            <EnvMap
+                preset="studio"
+                environmentIntensity={environmentMapIntensity}
+            />
             <color attach="background" args={[BACKGROUND]} />
             <fog attach="fog" args={[BACKGROUND, 75, 170]} />
         </>
