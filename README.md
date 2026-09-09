@@ -2,6 +2,8 @@
 
 A Three.js scene featuring two monsters with custom eye shaders.
 
+[Live](https://dariaborisiak.com/monsters/)
+
 <img width="1713" height="917" alt="Screenshot from 2026-09-09 15-57-01" src="https://github.com/user-attachments/assets/31c7649c-0e17-46d9-b295-bfd171d94b23" />
 
 # Run the project
