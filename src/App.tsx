@@ -9,10 +9,8 @@ import { LoadingScreen } from './LoadingScreen';
 import { GithubLink } from './GithubLink';
 import { LightControls } from './LightControls';
 import { useDebug } from './hooks/useDebug';
+import { CAMERA_POSITION, CAMERA_TARGET } from './constants';
 import './App.css';
-
-const CAMERA_POSITION: [number, number, number] = [-10, 13, 72];
-const CAMERA_TARGET: [number, number, number] = [15, 11.5, 0];
 
 function App() {
     const debug = useDebug();
