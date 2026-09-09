@@ -1,53 +1,21 @@
-import {
-    AMBIENT_MAX,
-    DIRECTIONAL_MAX,
-    useLightStore,
-} from './store/useLightStore';
+import { BRIGHTNESS_MAX, useLightStore } from './store/useLightStore';
 import './LightControls.css';
 
 export function LightControls() {
-    const ambientLightIntensity = useLightStore(
-        (state) => state.ambientIntensity,
-    );
-    const directionalLightIntensity = useLightStore(
-        (state) => state.directionalIntensity,
-    );
-    const setAmbientIntensity = useLightStore(
-        (state) => state.setAmbientIntensity,
-    );
-    const setDirectionalIntensity = useLightStore(
-        (state) => state.setDirectionalIntensity,
-    );
+    const brightness = useLightStore((state) => state.brightness);
+    const setBrightness = useLightStore((state) => state.setBrightness);
 
     return (
-        <div className="light-controls">
-            <label className="light-controls__slider">
-                <span className="light-controls__label">Ambient</span>
-                <input
-                    type="range"
-                    min={0}
-                    max={AMBIENT_MAX}
-                    step={0.05}
-                    value={ambientLightIntensity}
-                    onChange={(event) =>
-                        setAmbientIntensity(event.target.valueAsNumber)
-                    }
-                />
-            </label>
-
-            <label className="light-controls__slider">
-                <span className="light-controls__label">Sunlight</span>
-                <input
-                    type="range"
-                    min={0}
-                    max={DIRECTIONAL_MAX}
-                    step={0.1}
-                    value={directionalLightIntensity}
-                    onChange={(event) =>
-                        setDirectionalIntensity(event.target.valueAsNumber)
-                    }
-                />
-            </label>
-        </div>
+        <label className="light-controls">
+            <span className="light-controls__label">Light</span>
+            <input
+                type="range"
+                min={0}
+                max={BRIGHTNESS_MAX}
+                step={0.01}
+                value={brightness}
+                onChange={(event) => setBrightness(event.target.valueAsNumber)}
+            />
+        </label>
     );
 }

@@ -13,32 +13,22 @@ export function getLightAlignment(
 }
 
 type ExposureInput = {
-    ambientLightLevel: number;
-    directionalLightLevel: number;
+    brightness: number;
     lightAlignment: number;
-    ambientLightWeight: number;
-    directionalLightBounce: number;
+    gazeIndependentLightShare: number;
 };
 
 export function getExposure({
-    ambientLightLevel,
-    directionalLightLevel,
+    brightness,
     lightAlignment,
-    ambientLightWeight,
-    directionalLightBounce,
+    gazeIndependentLightShare,
 }: ExposureInput) {
-    const directionalLightWeight = 1 - ambientLightWeight;
+    const gazeDependentLightShare = 1 - gazeIndependentLightShare;
 
-    const glareFraction = (1 - directionalLightBounce) * lightAlignment;
-    const directionalLightReachingEye = directionalLightBounce + glareFraction;
+    const lightReachingEye =
+        gazeIndependentLightShare + gazeDependentLightShare * lightAlignment;
 
-    const ambientLightShare = ambientLightWeight * ambientLightLevel;
-    const directionalLightShare =
-        directionalLightWeight *
-        directionalLightLevel *
-        directionalLightReachingEye;
-
-    return ambientLightShare + directionalLightShare;
+    return brightness * lightReachingEye;
 }
 
 export function getPupilOpenness(

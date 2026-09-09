@@ -12,13 +12,17 @@ import { useControls } from 'leva';
 import { useDebug } from './hooks/useDebug';
 import { BACKGROUND, DIRECTIONAL_LIGHT_POSITION } from './constants';
 import { useLightStore } from './store/useLightStore';
+import {
+    getAmbientLightIntensity,
+    getDirectionalLightIntensity,
+} from './utils/light';
 
 export function Environment() {
     const debug = useDebug();
-    const ambientLightIntensity = useLightStore((state) => state.ambientIntensity);
-    const directionalLightIntensity = useLightStore(
-        (state) => state.directionalIntensity,
-    );
+    const brightness = useLightStore((state) => state.brightness);
+
+    const ambientLightIntensity = getAmbientLightIntensity(brightness);
+    const directionalLightIntensity = getDirectionalLightIntensity(brightness);
     const lightRef = useRef<DirectionalLight>(null);
     const shadowCameraRef = useRef<Camera>(null);
     const [hasShadowCamera, setHasShadowCamera] = useState(false);

@@ -3,8 +3,7 @@ import { monitor, useControls } from 'leva';
 export type PupilControlValues = {
     alignmentMin: number;
     alignmentMax: number;
-    ambientLightWeight: number;
-    directionalLightBounce: number;
+    gazeIndependentLightShare: number;
     exposureMin: number;
     exposureMax: number;
     smoothing: number;
@@ -30,14 +29,8 @@ export function usePupilControls(
                 max: 1,
                 step: 0.01,
             },
-            ambientLightWeight: {
-                value: defaults.ambientLightWeight,
-                min: 0,
-                max: 1,
-                step: 0.01,
-            },
-            directionalLightBounce: {
-                value: defaults.directionalLightBounce,
+            gazeIndependentLightShare: {
+                value: defaults.gazeIndependentLightShare,
                 min: 0,
                 max: 1,
                 step: 0.01,

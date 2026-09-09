@@ -3,11 +3,7 @@ import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
 
 import { DIRECTIONAL_LIGHT_POSITION } from '../constants';
-import {
-    AMBIENT_DEFAULT,
-    DIRECTIONAL_DEFAULT,
-    useLightStore,
-} from '../store/useLightStore';
+import { useLightStore } from '../store/useLightStore';
 import { type EyeMaterialImpl } from '../materials/eyeMaterial';
 import { damp } from '../utils/damp';
 import { getExposure, getLightAlignment, getPupilOpenness } from '../utils/pupil';
@@ -20,10 +16,9 @@ const LIGHT_DIRECTION = new THREE.Vector3(
 const DEFAULTS: PupilControlValues = {
     alignmentMin: 0.6,
     alignmentMax: 0.9,
-    ambientLightWeight: 0.35,
-    directionalLightBounce: 0.4,
+    gazeIndependentLightShare: 0.55,
     exposureMin: 0,
-    exposureMax: 1.2,
+    exposureMax: 1.05,
     smoothing: 2.5,
 };
 
@@ -50,11 +45,7 @@ export function usePupilResponse(
     );
 
     useFrame((_, delta) => {
-        const { ambientIntensity, directionalIntensity } =
-            useLightStore.getState();
-
-        const ambientLightLevel = ambientIntensity / AMBIENT_DEFAULT;
-        const directionalLightLevel = directionalIntensity / DIRECTIONAL_DEFAULT;
+        const { brightness } = useLightStore.getState();
 
         for (let index = 0; index < eyeRefs.length; index++) {
             const eye = eyeRefs[index].current;
@@ -79,11 +70,9 @@ export function usePupilResponse(
             );
 
             const exposure = getExposure({
-                ambientLightLevel,
-                directionalLightLevel,
+                brightness,
                 lightAlignment,
-                ambientLightWeight: controls.ambientLightWeight,
-                directionalLightBounce: controls.directionalLightBounce,
+                gazeIndependentLightShare: controls.gazeIndependentLightShare,
             });
 
             const targetOpenness = getPupilOpenness(
