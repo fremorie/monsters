@@ -91,7 +91,8 @@ export function Cyclops() {
             >
                 <eyeMaterial
                     key={EyeMaterial.key}
-                    uPupilRadius={0.2}
+                    uPupilRadius={0.15}
+                    uPupilDilation={0.26}
                     uIrisRadius={0.85}
                     uEyeRadius={eyeRadiusOf(nodes.Eye002.geometry)}
                     uNoiseColor={new THREE.Color('#c2ebff')}

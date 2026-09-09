@@ -11,6 +11,8 @@ uniform float uScleraRednessSpread;
 uniform float uVignetteStrength;
 uniform float uPupilRadius;
 uniform float uPupilDilation;
+/** 0 constricts to uPupilRadius, 1 opens all the way to uPupilRadius + uPupilDilation. */
+uniform float uPupilOpenness;
 uniform float uIrisRadius;
 uniform float uEyeRadius;
 
@@ -42,8 +44,7 @@ void main() {
     vec3 color = sclera;
 
     if (radius < uIrisRadius * SCLERA_END) {
-        float breathing = 0.9;
-        float pupilRadius = uPupilRadius + uPupilDilation * breathing;
+        float pupilRadius = uPupilRadius + uPupilDilation * uPupilOpenness;
         pupilRadius = clamp(pupilRadius, 0.02, uIrisRadius - 0.08);
 
         pupilRadius *= 1.0 + 0.03 * (fbm(3.0 * direction + 17.0) - 0.5);
