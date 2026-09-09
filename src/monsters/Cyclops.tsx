@@ -3,7 +3,7 @@ import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
 import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
-import { EyeMaterial } from '../materials/eyeMaterial';
+import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useEyeTracking } from '../hooks/useEyeTracking';
 
@@ -91,10 +91,11 @@ export function Cyclops() {
             >
                 <eyeMaterial
                     key={EyeMaterial.key}
-                    uPupilRadius={0.3}
-                    uIrisRadius={0.9}
+                    uPupilRadius={0.2}
+                    uIrisRadius={0.85}
+                    uEyeRadius={eyeRadiusOf(nodes.Eye002.geometry)}
                     uNoiseColor={new THREE.Color('#c2ebff')}
-                    uCenterColor={new THREE.Color('#fffaed')}
+                    uCenterColor={new THREE.Color('#837048')}
                     uStripesColor={new THREE.Color('#90a79b')}
                     uVignetteStrength={1}
                 />

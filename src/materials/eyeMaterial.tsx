@@ -15,6 +15,7 @@ export const EYE_DEFAULTS = {
     pupilDilation: 0.15,
     vignetteStrength: 1,
     irisRadius: 0.8,
+    eyeRadius: 1,
 };
 
 const uniforms = {
@@ -28,7 +29,16 @@ const uniforms = {
     uPupilRadius: EYE_DEFAULTS.pupilRadius,
     uPupilDilation: EYE_DEFAULTS.pupilDilation,
     uIrisRadius: EYE_DEFAULTS.irisRadius,
+    uEyeRadius: EYE_DEFAULTS.eyeRadius,
 };
+
+/**
+ * Radius of the eyeball sphere the iris is painted on.
+ */
+export function eyeRadiusOf(geometry: THREE.BufferGeometry) {
+    geometry.computeBoundingSphere();
+    return geometry.boundingSphere?.radius ?? EYE_DEFAULTS.eyeRadius;
+}
 
 export const EyeMaterial = shaderMaterial(
     uniforms,

@@ -3,7 +3,7 @@ import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
 import { type GLTF } from 'three-stdlib';
 import { folder, useControls } from 'leva';
 
-import { EyeMaterial } from '../materials/eyeMaterial';
+import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useEyeTracking } from '../hooks/useEyeTracking';
 
@@ -85,7 +85,10 @@ export function Kisa() {
                 geometry={nodes.EyeLeft001.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
-                <eyeMaterial key={EyeMaterial.key} />
+                <eyeMaterial
+                    key={EyeMaterial.key}
+                    uEyeRadius={eyeRadiusOf(nodes.EyeLeft001.geometry)}
+                />
             </mesh>
 
             <mesh
@@ -93,7 +96,10 @@ export function Kisa() {
                 geometry={nodes.EyeRight001.geometry}
                 position={[-1.095, 6.133, 4.862]}
             >
-                <eyeMaterial key={EyeMaterial.key} />
+                <eyeMaterial
+                    key={EyeMaterial.key}
+                    uEyeRadius={eyeRadiusOf(nodes.EyeRight001.geometry)}
+                />
             </mesh>
         </group>
     );

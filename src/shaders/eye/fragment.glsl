@@ -9,6 +9,7 @@ uniform float uVignetteStrength;
 uniform float uPupilRadius;
 uniform float uPupilDilation;
 uniform float uIrisRadius;
+uniform float uEyeRadius;
 
 varying vec3 vPosition;
 
@@ -16,9 +17,11 @@ varying vec3 vPosition;
 
 const float RELAXED_PUPIL_RADIUS = 0.2;
 const float FIBRE_FOLLOW = 0.6;
+const float LIMBUS_START = 0.8;
+const float SCLERA_END = 1.14;
 
 void main() {
-    vec3 pos = normalize(vPosition);
+    vec3 pos = vPosition / uEyeRadius;
     vec2 uv = pos.xy / 0.5;
 
     vec3 background = vec3(1.0);
@@ -30,7 +33,7 @@ void main() {
 
     radius = pos.z < 0.0 ? 4.0 - radius : radius;
 
-    if (radius < uIrisRadius) {
+    if (radius < uIrisRadius * SCLERA_END) {
         float breathing = 0.9;
         float pupilRadius = uPupilRadius + uPupilDilation * breathing;
         pupilRadius = clamp(pupilRadius, 0.02, uIrisRadius - 0.08);
@@ -71,13 +74,15 @@ void main() {
 
         color *= mix(0.88, 1.0, clamp(irisCompression, 0.0, 1.0));
 
-        mask = smoothstep(0.6, uIrisRadius, radius);
+        float limbusCoord = radius / uIrisRadius;
+
+        mask = smoothstep(LIMBUS_START, 1.0, limbusCoord);
         color *= 1.0 - uVignetteStrength * mask;
 
         mask = smoothstep(pupilRadius, pupilRadius + 0.04, radius);
         color *= mask;
 
-        mask = smoothstep(0.7, uIrisRadius, radius);
+        mask = smoothstep(1.0, SCLERA_END, limbusCoord);
         color = mix(color, vec3(1.0), mask);
     }
 
