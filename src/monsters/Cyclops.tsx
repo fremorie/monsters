@@ -5,7 +5,7 @@ import { folder, useControls } from 'leva';
 
 import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
-import { useEyeTracking } from '../hooks/useEyeTracking';
+import { useCyclopsEyeTracking } from '../hooks/useCyclopsEyeTracking';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -41,7 +41,7 @@ export function Cyclops() {
         duration: 0.2,
         interval: 6,
     });
-    const { eyeLeftRef: eyeRef } = useEyeTracking();
+    const { eyeRef } = useCyclopsEyeTracking();
 
     return (
         <group rotation-y={-0.6} position={[20, 1.2, 10]} dispose={null}>
