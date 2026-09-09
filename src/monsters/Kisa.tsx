@@ -29,9 +29,9 @@ export function Kisa() {
     const controls = useControls({
         'Cornea material': folder({
             transmission: { value: 1, min: 0, max: 1 },
-            roughness: { value: 0.02, min: 0, max: 1 },
+            roughness: { value: 0.2, min: 0, max: 1 },
             iridescence: { value: 0.001, min: 0.001, max: 1 },
-            thickness: { value: 0.1, min: 0, max: 1 },
+            thickness: { value: 0.53, min: 0, max: 1 },
             color: '#ffffff',
         }),
     });
