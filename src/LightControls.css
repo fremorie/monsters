@@ -1,0 +1,41 @@
+.light-controls {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 4px;
+    color: #3b3631;
+    opacity: 0.85;
+    transition: opacity 200ms ease;
+
+    /* body sets touch-action: none to stop pinch-zoom over the canvas */
+    touch-action: auto;
+}
+
+.light-controls:hover,
+.light-controls:focus-within {
+    opacity: 1;
+}
+
+.light-controls__slider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: system-ui, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.light-controls__label {
+    width: 64px;
+}
+
+.light-controls__slider input {
+    width: 120px;
+    accent-color: #3b3631;
+    cursor: pointer;
+}
