@@ -21,8 +21,8 @@ const DEFAULTS: PupilControlValues = {
     alignmentMin: 0.6,
     alignmentMax: 0.9,
     ambientLightWeight: 0.35,
-    exposureMin: 0.4,
-    exposureMax: 0.95,
+    exposureMin: 0,
+    exposureMax: 0.8,
     smoothing: 2.5,
 };
 

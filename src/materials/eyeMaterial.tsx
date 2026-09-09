@@ -15,7 +15,7 @@ export const EYE_DEFAULTS = {
     scleraRedness: 0.65,
     scleraRednessSpread: 1.2,
     pupilRadius: 0.22,
-    pupilDilation: 0.28,
+    pupilDilation: 0.48,
     pupilOpenness: 0.5,
     vignetteStrength: 1,
     irisRadius: 0.8,
