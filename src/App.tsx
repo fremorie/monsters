@@ -34,7 +34,7 @@ function App() {
                     <Preload all />
                 </Suspense>
 
-                {debug && <Perf position="bottom-left" />}
+                {debug && <Perf position="top-left" />}
             </Canvas>
 
             <LightControls />
