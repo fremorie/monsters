@@ -5,14 +5,10 @@ import { Preload } from '@react-three/drei';
 import { Leva } from 'leva';
 
 import { Experience } from './Experience';
+import { LoadingScreen } from './LoadingScreen';
 import { useDebug } from './hooks/useDebug';
 import './App.css';
 
-/**
- * Kisa stands on the floor at the origin. The camera is aimed up and to her
- * right instead of straight at her, which drops her into the bottom-left of the
- * frame.
- */
 const CAMERA_POSITION: [number, number, number] = [-10, 13, 72];
 const CAMERA_TARGET: [number, number, number] = [15, 11.5, 0];
 
@@ -38,6 +34,8 @@ function App() {
 
                 {debug && <Perf position="bottom-left" />}
             </Canvas>
+
+            <LoadingScreen />
 
             <Leva
                 hidden={!debug}
