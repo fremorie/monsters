@@ -6,7 +6,11 @@ import { DIRECTIONAL_LIGHT_POSITION } from '../constants';
 import { useLightStore } from '../store/useLightStore';
 import { type EyeMaterialImpl } from '../materials/eyeMaterial';
 import { damp } from '../utils/damp';
-import { getExposure, getLightAlignment, getPupilOpenness } from '../utils/pupil';
+import {
+    getExposure,
+    getLightAlignment,
+    getPupilOpenness,
+} from '../utils/pupil';
 import { usePupilControls, type PupilControlValues } from './usePupilControls';
 
 const LIGHT_DIRECTION = new THREE.Vector3(

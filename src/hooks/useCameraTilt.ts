@@ -30,11 +30,7 @@ export function useCameraTilt({
 
     useEffect(() => {
         camera.updateMatrixWorld();
-        camera.matrixWorld.extractBasis(
-            restRight,
-            restUp,
-            new THREE.Vector3(),
-        );
+        camera.matrixWorld.extractBasis(restRight, restUp, new THREE.Vector3());
 
         restPosition.copy(camera.position);
     }, [camera, restPosition, restRight, restUp]);

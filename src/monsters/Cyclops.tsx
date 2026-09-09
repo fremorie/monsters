@@ -1,12 +1,13 @@
 import * as THREE from 'three';
-import { MeshTransmissionMaterial, useGLTF } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { type GLTF } from 'three-stdlib';
-import { folder, useControls } from 'leva';
 
 import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useCyclopsEyeTracking } from '../hooks/useCyclopsEyeTracking';
 import { usePupilResponse } from '../hooks/usePupilResponse';
+import { bodyMaterial } from '../materials/bodyMaterial';
+import { CorneaMaterial } from '../materials/corneaMaterial';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,23 +19,8 @@ type GLTFResult = GLTF & {
     };
 };
 
-const bodyMaterial = new THREE.MeshStandardMaterial({
-    color: '#000000',
-    roughness: 1,
-});
-
 export function Cyclops() {
     const { nodes } = useGLTF('./Cyclops.glb') as unknown as GLTFResult;
-
-    const controls = useControls({
-        'Cornea material (cyclops)': folder({
-            transmission: { value: 1, min: 0, max: 1 },
-            roughness: { value: 0.2, min: 0, max: 1 },
-            iridescence: { value: 0.001, min: 0.001, max: 1 },
-            thickness: { value: 0.65, min: 0, max: 1 },
-            color: '#ffffff',
-        }),
-    });
 
     const { topEyeLidRef, bottomEyeLidRef } = useBlink({
         topClosed: 0.15,
@@ -79,16 +65,7 @@ export function Cyclops() {
                 geometry={nodes.Cornea002.geometry}
                 position={[0, 4.619, 3.928]}
             >
-                <MeshTransmissionMaterial
-                    transparent
-                    depthWrite={true}
-                    transmission={controls.transmission}
-                    roughness={controls.roughness}
-                    ior={1.376}
-                    iridescence={controls.iridescence}
-                    thickness={controls.thickness}
-                    color={controls.color}
-                />
+                <CorneaMaterial thickness={0.65} />
             </mesh>
 
             <mesh
