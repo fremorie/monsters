@@ -9,12 +9,12 @@ import { useEyeTracking } from '../hooks/useEyeTracking';
 
 type GLTFResult = GLTF & {
     nodes: {
-        Body: THREE.Mesh;
-        BottomLid: THREE.Mesh;
-        Corneas: THREE.Mesh;
-        EyeLeft: THREE.Mesh;
-        EyeRight: THREE.Mesh;
-        TopLid: THREE.Mesh;
+        Body001: THREE.Mesh;
+        BottomLid001: THREE.Mesh;
+        Corneas001: THREE.Mesh;
+        EyeLeft001: THREE.Mesh;
+        EyeRight001: THREE.Mesh;
+        TopLid001: THREE.Mesh;
     };
 };
 
@@ -24,7 +24,7 @@ const bodyMaterial = new THREE.MeshStandardMaterial({
 });
 
 export function Kisa() {
-    const { nodes } = useGLTF('./Kisa.glb') as unknown as GLTFResult;
+    const { nodes } = useGLTF('./KisaLowPoly.glb') as unknown as GLTFResult;
 
     const controls = useControls({
         'Cornea material': folder({
@@ -43,14 +43,14 @@ export function Kisa() {
         <group dispose={null}>
             <mesh
                 castShadow
-                geometry={nodes.Body.geometry}
+                geometry={nodes.Body001.geometry}
                 position={[0, 5.161, -0.014]}
                 material={bodyMaterial}
             />
 
             <mesh
                 ref={topEyeLidRef}
-                geometry={nodes.TopLid.geometry}
+                geometry={nodes.TopLid001.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[-0.2, 0, 0]}
                 material={bodyMaterial}
@@ -58,14 +58,14 @@ export function Kisa() {
 
             <mesh
                 ref={bottomEyeLidRef}
-                geometry={nodes.BottomLid.geometry}
+                geometry={nodes.BottomLid001.geometry}
                 position={[1.115, 6.133, 4.862]}
                 rotation={[0.5, 0, 0]}
                 material={bodyMaterial}
             />
 
             <mesh
-                geometry={nodes.Corneas.geometry}
+                geometry={nodes.Corneas001.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
                 <MeshTransmissionMaterial
@@ -82,7 +82,7 @@ export function Kisa() {
 
             <mesh
                 ref={eyeLeftRef}
-                geometry={nodes.EyeLeft.geometry}
+                geometry={nodes.EyeLeft001.geometry}
                 position={[1.115, 6.133, 4.862]}
             >
                 <eyeMaterial key={EyeMaterial.key} />
@@ -90,7 +90,7 @@ export function Kisa() {
 
             <mesh
                 ref={eyeRightRef}
-                geometry={nodes.EyeRight.geometry}
+                geometry={nodes.EyeRight001.geometry}
                 position={[-1.095, 6.133, 4.862]}
             >
                 <eyeMaterial key={EyeMaterial.key} />
