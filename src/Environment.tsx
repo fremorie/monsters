@@ -10,10 +10,15 @@ import {
 import { useControls } from 'leva';
 
 import { useDebug } from './hooks/useDebug';
-import { BACKGROUND } from './constants';
+import { BACKGROUND, DIRECTIONAL_LIGHT_POSITION } from './constants';
+import { useLightStore } from './store/useLightStore';
 
 export function Environment() {
     const debug = useDebug();
+    const ambientLightIntensity = useLightStore((state) => state.ambientIntensity);
+    const directionalLightIntensity = useLightStore(
+        (state) => state.directionalIntensity,
+    );
     const lightRef = useRef<DirectionalLight>(null);
     const shadowCameraRef = useRef<Camera>(null);
     const [hasShadowCamera, setHasShadowCamera] = useState(false);
@@ -46,8 +51,8 @@ export function Environment() {
                 ref={lightRef}
                 castShadow
                 color={directionalColor}
-                position={[22, 18, 30]}
-                intensity={6.5}
+                position={DIRECTIONAL_LIGHT_POSITION}
+                intensity={directionalLightIntensity}
                 shadow-normalBias={0}
                 shadow-camera-left={-16}
                 shadow-camera-right={16}
@@ -58,7 +63,10 @@ export function Environment() {
                 shadow-radius={3}
                 shadow-mapSize={[1024, 1024]}
             />
-            <ambientLight color={ambientColor} intensity={1.5} />
+            <ambientLight
+                color={ambientColor}
+                intensity={ambientLightIntensity}
+            />
             <EnvMap preset="studio" environmentIntensity={0.2} />
             <color attach="background" args={[BACKGROUND]} />
             <fog attach="fog" args={[BACKGROUND, 75, 170]} />
