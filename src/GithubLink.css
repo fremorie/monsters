@@ -1,0 +1,16 @@
+.github-link {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 100;
+    display: flex;
+    padding: 4px;
+    color: #3b3631;
+    opacity: 0.85;
+    transition: opacity 200ms ease;
+}
+
+.github-link:hover,
+.github-link:focus-visible {
+    opacity: 1;
+}

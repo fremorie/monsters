@@ -6,6 +6,7 @@ import { Leva } from 'leva';
 
 import { Experience } from './Experience';
 import { LoadingScreen } from './LoadingScreen';
+import { GithubLink } from './GithubLink';
 import { useDebug } from './hooks/useDebug';
 import './App.css';
 
@@ -34,6 +35,8 @@ function App() {
 
                 {debug && <Perf position="bottom-left" />}
             </Canvas>
+
+            <GithubLink />
 
             <LoadingScreen />
 
