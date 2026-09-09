@@ -6,6 +6,7 @@ import { folder, useControls } from 'leva';
 import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
 import { useBlink } from '../hooks/useBlink';
 import { useEyeTracking } from '../hooks/useEyeTracking';
+import { usePupilResponse } from '../hooks/usePupilResponse';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -38,6 +39,8 @@ export function Kisa() {
 
     const { topEyeLidRef, bottomEyeLidRef } = useBlink();
     const { eyeLeftRef, eyeRightRef } = useEyeTracking();
+
+    usePupilResponse([eyeLeftRef, eyeRightRef], { label: 'Kisa pupils' });
 
     return (
         <group dispose={null}>
