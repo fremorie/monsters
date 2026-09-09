@@ -105,4 +105,4 @@ export function Kisa() {
     );
 }
 
-useGLTF.preload('./Kisa.glb');
+useGLTF.preload('./KisaLowPoly.glb');
