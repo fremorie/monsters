@@ -12,17 +12,31 @@ export function getLightAlignment(
     );
 }
 
-export function getExposure(
-    ambientLightLevel: number,
-    directionalLightLevel: number,
-    lightAlignment: number,
-    ambientLightWeight: number,
-) {
+type ExposureInput = {
+    ambientLightLevel: number;
+    directionalLightLevel: number;
+    lightAlignment: number;
+    ambientLightWeight: number;
+    directionalLightBounce: number;
+};
+
+export function getExposure({
+    ambientLightLevel,
+    directionalLightLevel,
+    lightAlignment,
+    ambientLightWeight,
+    directionalLightBounce,
+}: ExposureInput) {
     const directionalLightWeight = 1 - ambientLightWeight;
+
+    const glareFraction = (1 - directionalLightBounce) * lightAlignment;
+    const directionalLightReachingEye = directionalLightBounce + glareFraction;
 
     const ambientLightShare = ambientLightWeight * ambientLightLevel;
     const directionalLightShare =
-        directionalLightWeight * directionalLightLevel * lightAlignment;
+        directionalLightWeight *
+        directionalLightLevel *
+        directionalLightReachingEye;
 
     return ambientLightShare + directionalLightShare;
 }

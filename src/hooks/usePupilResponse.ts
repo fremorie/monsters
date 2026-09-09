@@ -21,8 +21,9 @@ const DEFAULTS: PupilControlValues = {
     alignmentMin: 0.6,
     alignmentMax: 0.9,
     ambientLightWeight: 0.35,
+    directionalLightBounce: 0.4,
     exposureMin: 0,
-    exposureMax: 0.8,
+    exposureMax: 1.2,
     smoothing: 2.5,
 };
 
@@ -77,12 +78,13 @@ export function usePupilResponse(
                 controls.alignmentMax,
             );
 
-            const exposure = getExposure(
+            const exposure = getExposure({
                 ambientLightLevel,
                 directionalLightLevel,
                 lightAlignment,
-                controls.ambientLightWeight,
-            );
+                ambientLightWeight: controls.ambientLightWeight,
+                directionalLightBounce: controls.directionalLightBounce,
+            });
 
             const targetOpenness = getPupilOpenness(
                 exposure,
