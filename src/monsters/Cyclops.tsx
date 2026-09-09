@@ -41,7 +41,7 @@ export function Cyclops() {
         duration: 0.2,
         interval: 6,
     });
-    const { eyeRef } = useCyclopsEyeTracking();
+    const { eyeRef } = useCyclopsEyeTracking({ maxYaw: 20 });
 
     return (
         <group rotation-y={-0.6} position={[20, 1.2, 10]} dispose={null}>

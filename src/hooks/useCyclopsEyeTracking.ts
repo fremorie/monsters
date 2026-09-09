@@ -3,9 +3,9 @@ import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 
 type EyeTrackingOptions = {
-    /** furthest the gaze swings left or right of the viewer, in degrees */
+    /** gaze swing when the cursor is half a canvas away from the eye, in degrees */
     maxYaw?: number;
-    /** furthest the gaze swings up or down from the viewer, in degrees */
+    /** gaze swing when the cursor is half a canvas above or below the eye, in degrees */
     maxPitch?: number;
     /** >1 responds quickly near the center and flattens toward the screen edges; approaches a linear response as it nears 0 */
     falloff?: number;
@@ -23,6 +23,7 @@ export function useCyclopsEyeTracking({
 
     const camera = useThree((state) => state.camera);
     const domElement = useThree((state) => state.gl.domElement);
+    const size = useThree((state) => state.size);
 
     const cameraBasis = useMemo(
         () => ({ right: new THREE.Vector3(), up: new THREE.Vector3() }),
@@ -33,6 +34,7 @@ export function useCyclopsEyeTracking({
     const gazeCurrent = useMemo(() => camera.position.clone(), [camera]);
 
     const reach = useRef({ horizontal: 0, vertical: 0 });
+    const eyeOnScreen = useRef(new THREE.Vector2());
     const isPointerOverCanvas = useRef(false);
 
     const response = useMemo(() => {
@@ -54,6 +56,9 @@ export function useCyclopsEyeTracking({
         const eyeCenter = eye.getWorldPosition(new THREE.Vector3());
         const eyeToCameraDistance = eyeCenter.distanceTo(camera.position);
 
+        const eyeNdc = eyeCenter.clone().project(camera);
+        eyeOnScreen.current.set(eyeNdc.x, eyeNdc.y);
+
         reach.current = {
             horizontal:
                 eyeToCameraDistance *
@@ -62,7 +67,7 @@ export function useCyclopsEyeTracking({
                 eyeToCameraDistance *
                 Math.tan(THREE.MathUtils.degToRad(maxPitch)),
         };
-    }, [camera, maxYaw, maxPitch, cameraBasis]);
+    }, [camera, maxYaw, maxPitch, cameraBasis, size]);
 
     useEffect(() => {
         const handlePointerMove = () => {
@@ -88,10 +93,13 @@ export function useCyclopsEyeTracking({
         gazeTarget.copy(camera.position);
 
         if (isPointerOverCanvas.current) {
+            const towardPointerX = pointer.x - eyeOnScreen.current.x;
+            const towardPointerY = pointer.y - eyeOnScreen.current.y;
+
             const swingX =
-                Math.tanh(pointer.x * response.curve) / response.atEdge;
+                Math.tanh(towardPointerX * response.curve) / response.atEdge;
             const swingY =
-                Math.tanh(pointer.y * response.curve) / response.atEdge;
+                Math.tanh(towardPointerY * response.curve) / response.atEdge;
 
             gazeTarget.addScaledVector(
                 cameraBasis.right,
