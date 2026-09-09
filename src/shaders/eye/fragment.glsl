@@ -4,7 +4,10 @@ uniform vec3 uBaseColor;
 uniform vec3 uNoiseColor;
 uniform vec3 uCenterColor;
 uniform vec3 uStripesColor;
+uniform vec3 uScleraEdgeColor;
 uniform float uStripesNoiseStrength;
+uniform float uScleraRedness;
+uniform float uScleraRednessSpread;
 uniform float uVignetteStrength;
 uniform float uPupilRadius;
 uniform float uPupilDilation;
@@ -24,14 +27,19 @@ void main() {
     vec3 pos = vPosition / uEyeRadius;
     vec2 uv = pos.xy / 0.5;
 
-    vec3 background = vec3(1.0);
-    vec3 color = vec3(1.0);
-
     float radius = length(uv);
     float angle = atan(uv.y, uv.x);
     vec2 direction = vec2(cos(angle), sin(angle));
 
     radius = pos.z < 0.0 ? 4.0 - radius : radius;
+
+    float scleraCoord =
+        (radius - uIrisRadius * SCLERA_END) / max(uScleraRednessSpread, 0.001);
+    float redness = uScleraRedness * smoothstep(0.0, 1.0, clamp(scleraCoord, 0.0, 1.0));
+    vec3 sclera = mix(vec3(1.0), uScleraEdgeColor, redness);
+
+    vec3 background = vec3(1.0);
+    vec3 color = sclera;
 
     if (radius < uIrisRadius * SCLERA_END) {
         float breathing = 0.9;
@@ -83,7 +91,7 @@ void main() {
         color *= mask;
 
         mask = smoothstep(1.0, SCLERA_END, limbusCoord);
-        color = mix(color, vec3(1.0), mask);
+        color = mix(color, sclera, mask);
     }
 
     gl_FragColor = vec4(color * background, 1.0);
