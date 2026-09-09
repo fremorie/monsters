@@ -8,12 +8,12 @@ uniform float uStripesNoiseStrength;
 uniform float uVignetteStrength;
 uniform float uPupilRadius;
 uniform float uPupilDilation;
+uniform float uIrisRadius;
 
 varying vec3 vPosition;
 
 #include "../includes/fbm.glsl"
 
-const float IRIS_RADIUS = 0.8;
 const float RELAXED_PUPIL_RADIUS = 0.2;
 const float FIBRE_FOLLOW = 0.6;
 
@@ -30,19 +30,19 @@ void main() {
 
     radius = pos.z < 0.0 ? 4.0 - radius : radius;
 
-    if (radius < IRIS_RADIUS) {
+    if (radius < uIrisRadius) {
         float breathing = 0.9;
         float pupilRadius = uPupilRadius + uPupilDilation * breathing;
-        pupilRadius = clamp(pupilRadius, 0.02, IRIS_RADIUS - 0.08);
+        pupilRadius = clamp(pupilRadius, 0.02, uIrisRadius - 0.08);
 
         pupilRadius *= 1.0 + 0.03 * (fbm(3.0 * direction + 17.0) - 0.5);
 
-        float irisCoord = (radius - pupilRadius) / (IRIS_RADIUS - pupilRadius);
+        float irisCoord = (radius - pupilRadius) / (uIrisRadius - pupilRadius);
 
         float irisCompression =
-            (IRIS_RADIUS - pupilRadius) / (IRIS_RADIUS - RELAXED_PUPIL_RADIUS);
+            (uIrisRadius - pupilRadius) / (uIrisRadius - RELAXED_PUPIL_RADIUS);
 
-        float squeezedRadius = mix(RELAXED_PUPIL_RADIUS, IRIS_RADIUS, irisCoord);
+        float squeezedRadius = mix(RELAXED_PUPIL_RADIUS, uIrisRadius, irisCoord);
         float patternRadius = mix(radius, squeezedRadius, FIBRE_FOLLOW);
         vec2 patternPosition = direction * patternRadius;
 
@@ -71,13 +71,13 @@ void main() {
 
         color *= mix(0.88, 1.0, clamp(irisCompression, 0.0, 1.0));
 
-        mask = smoothstep(0.6, IRIS_RADIUS, radius);
+        mask = smoothstep(0.6, uIrisRadius, radius);
         color *= 1.0 - uVignetteStrength * mask;
 
         mask = smoothstep(pupilRadius, pupilRadius + 0.04, radius);
         color *= mask;
 
-        mask = smoothstep(0.7, IRIS_RADIUS, radius);
+        mask = smoothstep(0.7, uIrisRadius, radius);
         color = mix(color, vec3(1.0), mask);
     }
 

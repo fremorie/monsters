@@ -14,6 +14,7 @@ export const EYE_DEFAULTS = {
     pupilRadius: 0.3,
     pupilDilation: 0.15,
     vignetteStrength: 1,
+    irisRadius: 0.8,
 };
 
 const uniforms = {
@@ -26,6 +27,7 @@ const uniforms = {
     uVignetteStrength: EYE_DEFAULTS.vignetteStrength,
     uPupilRadius: EYE_DEFAULTS.pupilRadius,
     uPupilDilation: EYE_DEFAULTS.pupilDilation,
+    uIrisRadius: EYE_DEFAULTS.irisRadius,
 };
 
 export const EyeMaterial = shaderMaterial(
