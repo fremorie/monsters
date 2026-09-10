@@ -9,4 +9,4 @@ export const DIRECTIONAL_LIGHT_POSITION: [number, number, number] = [
 ];
 
 export const CAMERA_POSITION: [number, number, number] = [-10, 13, 72];
-export const CAMERA_TARGET: [number, number, number] = [15, 11.5, 0];
+export const CAMERA_TARGET: [number, number, number] = [11, 11.5, 0];
