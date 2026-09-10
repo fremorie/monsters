@@ -1,6 +1,6 @@
 # Monsters
 
-A Three.js scene featuring two monsters with custom eye shaders.
+A Three.js scene featuring monsters with custom eye shaders.
 
 [Live](https://dariaborisiak.com/monsters/)
 
