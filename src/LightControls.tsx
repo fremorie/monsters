@@ -1,4 +1,8 @@
-import { BRIGHTNESS_MAX, useLightStore } from './store/useLightStore';
+import {
+    BRIGHTNESS_MAX,
+    BRIGHTNESS_MIN,
+    useLightStore,
+} from './store/useLightStore';
 import './LightControls.css';
 
 export function LightControls() {
@@ -10,7 +14,7 @@ export function LightControls() {
             <span className="light-controls__label">Light</span>
             <input
                 type="range"
-                min={0}
+                min={BRIGHTNESS_MIN}
                 max={BRIGHTNESS_MAX}
                 step={0.01}
                 value={brightness}

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+export const BRIGHTNESS_MIN = 0.23;
 export const BRIGHTNESS_DEFAULT = 1;
 export const BRIGHTNESS_MAX = 1.5;
 
