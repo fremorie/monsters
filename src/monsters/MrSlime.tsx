@@ -27,7 +27,7 @@ const EYE_PARAMETERS = {
     centerColor: '#d1894d',
     stripesColor: '#000000',
     scleraEdgeColor: '#b13f5d',
-    irisRadius: 0.9,
+    irisRadius: 0.88,
 };
 
 export function MrSlime() {
