@@ -12,7 +12,7 @@ import { CorneaMaterial } from '../materials/corneaMaterial';
 
 type GLTFResult = GLTF & {
     nodes: {
-        Body004: THREE.Mesh;
+        Body005: THREE.Mesh;
         BottomLid003: THREE.Mesh;
         Corneas003: THREE.Mesh;
         EyeLeft003: THREE.Mesh;
@@ -49,15 +49,15 @@ export function MrSlime() {
         >
             <mesh
                 castShadow
-                geometry={nodes.Body004.geometry}
-                position={[0, 5.285, 0]}
+                geometry={nodes.Body005.geometry}
+                position={[0, 6.723, 0]}
                 material={bodyMaterial}
             />
 
             <mesh
                 ref={topEyeLidRef}
                 geometry={nodes.TopLid003.geometry}
-                position={[1.869, 4.908, 5.979]}
+                position={[2.087, 6.69, 5.979]}
                 rotation={[-0.8, 0, 0]}
                 material={bodyMaterial}
             />
@@ -65,14 +65,14 @@ export function MrSlime() {
             <mesh
                 ref={bottomEyeLidRef}
                 geometry={nodes.BottomLid003.geometry}
-                position={[1.869, 4.908, 5.979]}
+                position={[2.087, 6.69, 5.979]}
                 rotation={[0.4, 0, 0]}
                 material={bodyMaterial}
             />
 
             <mesh
                 geometry={nodes.Corneas003.geometry}
-                position={[1.869, 4.908, 5.979]}
+                position={[2.087, 6.69, 5.979]}
             >
                 <CorneaMaterial />
             </mesh>
@@ -80,7 +80,7 @@ export function MrSlime() {
             <mesh
                 ref={eyeLeftRef}
                 geometry={nodes.EyeLeft003.geometry}
-                position={[1.869, 4.908, 5.979]}
+                position={[2.087, 6.69, 5.979]}
             >
                 <EyeMaterial
                     {...EYE_PARAMETERS}
@@ -91,7 +91,7 @@ export function MrSlime() {
             <mesh
                 ref={eyeRightRef}
                 geometry={nodes.EyeRight003.geometry}
-                position={[-1.884, 4.908, 5.979]}
+                position={[-2.753, 6.69, 5.979]}
             >
                 <EyeMaterial
                     {...EYE_PARAMETERS}
