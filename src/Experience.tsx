@@ -3,7 +3,7 @@ import { Kisa } from './monsters/Kisa';
 import { Stage } from './Stage';
 import { Cyclops } from './monsters/Cyclops';
 import { useCameraTilt } from './hooks/useCameraTilt';
-import {MrSlime} from "./monsters/MrSlime";
+import { MrSlime } from './monsters/MrSlime';
 
 export function Experience() {
     useCameraTilt();

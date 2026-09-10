@@ -60,12 +60,12 @@ export function Environment() {
                 position={DIRECTIONAL_LIGHT_POSITION}
                 intensity={directionalLightIntensity}
                 shadow-normalBias={0}
-                shadow-camera-left={-16}
-                shadow-camera-right={16}
+                shadow-camera-left={-22}
+                shadow-camera-right={18}
                 shadow-camera-top={16}
                 shadow-camera-bottom={-16}
-                shadow-camera-near={20}
-                shadow-camera-far={90}
+                shadow-camera-near={8}
+                shadow-camera-far={75}
                 shadow-radius={3}
                 shadow-mapSize={[1024, 1024]}
             />
