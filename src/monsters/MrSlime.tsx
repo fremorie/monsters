@@ -5,7 +5,7 @@ import { type GLTF } from 'three-stdlib';
 import { EyeMaterial } from '../materials/eyeMaterial';
 import { eyeRadiusOf } from '../materials/eyeUniforms';
 import { useBlink } from '../hooks/useBlink';
-import { useEyeColorControls } from '../hooks/useEyeColorControls';
+import { useEyeControls } from '../hooks/useEyeControls';
 import { useEyeTracking } from '../hooks/useEyeTracking';
 import { usePupilResponse } from '../hooks/usePupilResponse';
 import { bodyMaterial } from '../materials/bodyMaterial';
@@ -22,12 +22,13 @@ type GLTFResult = GLTF & {
     };
 };
 
-const EYE_COLORS = {
+const EYE_PARAMETERS = {
     baseColor: '#690202',
     noiseColor: '#a75931',
     centerColor: '#d1894d',
     stripesColor: '#000000',
     scleraEdgeColor: '#b13f5d',
+    irisRadius: 0.9,
 };
 
 export function MrSlime() {
@@ -39,9 +40,9 @@ export function MrSlime() {
     const { eyeLeftRef, eyeRightRef } = useEyeTracking();
 
     usePupilResponse([eyeLeftRef, eyeRightRef], { label: 'MrSlime pupils' });
-    useEyeColorControls([eyeLeftRef, eyeRightRef], {
+    useEyeControls([eyeLeftRef, eyeRightRef], {
         label: 'MrSlime eyes',
-        ...EYE_COLORS,
+        ...EYE_PARAMETERS,
     });
 
     return (
@@ -87,7 +88,7 @@ export function MrSlime() {
                 position={[1.869, 4.908, 5.979]}
             >
                 <EyeMaterial
-                    {...EYE_COLORS}
+                    {...EYE_PARAMETERS}
                     eyeRadius={eyeRadiusOf(nodes.EyeLeft003.geometry)}
                 />
             </mesh>
@@ -98,7 +99,7 @@ export function MrSlime() {
                 position={[-1.884, 4.908, 5.979]}
             >
                 <EyeMaterial
-                    {...EYE_COLORS}
+                    {...EYE_PARAMETERS}
                     eyeRadius={eyeRadiusOf(nodes.EyeRight003.geometry)}
                 />
             </mesh>
