@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 
-import { CAMERA_TARGET } from '../constants';
+import { CAMERA_POSITION, CAMERA_TARGET } from '../constants';
 import { useIsPointerOverCanvas } from './useIsPointerOverCanvas';
 
 type CameraTiltOptions = {
@@ -23,25 +23,30 @@ export function useCameraTilt({
     const isPointerOverCanvas = useIsPointerOverCanvas();
 
     const target = useMemo(() => new THREE.Vector3(...CAMERA_TARGET), []);
-    const restPosition = useMemo(() => new THREE.Vector3(), []);
-    const restRight = useMemo(() => new THREE.Vector3(), []);
-    const restUp = useMemo(() => new THREE.Vector3(), []);
+    const restPosition = useMemo(
+        () => new THREE.Vector3(...CAMERA_POSITION),
+        [],
+    );
+    const restBasis = useMemo(() => {
+        const forward = new THREE.Vector3()
+            .subVectors(target, restPosition)
+            .normalize();
+        const right = new THREE.Vector3()
+            .crossVectors(forward, camera.up)
+            .normalize();
+        const up = new THREE.Vector3().crossVectors(right, forward).normalize();
+
+        return { right, up };
+    }, [camera, restPosition, target]);
     const tiltedPosition = useMemo(() => new THREE.Vector3(), []);
-
-    useEffect(() => {
-        camera.updateMatrixWorld();
-        camera.matrixWorld.extractBasis(restRight, restUp, new THREE.Vector3());
-
-        restPosition.copy(camera.position);
-    }, [camera, restPosition, restRight, restUp]);
 
     useFrame(({ pointer }, delta) => {
         tiltedPosition.copy(restPosition);
 
         if (isPointerOverCanvas.current) {
             tiltedPosition
-                .addScaledVector(restRight, pointer.x * horizontalReach)
-                .addScaledVector(restUp, pointer.y * verticalReach);
+                .addScaledVector(restBasis.right, pointer.x * horizontalReach)
+                .addScaledVector(restBasis.up, pointer.y * verticalReach);
         }
 
         camera.position.lerp(tiltedPosition, 1 - Math.exp(-smoothing * delta));
