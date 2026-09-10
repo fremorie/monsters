@@ -1,5 +1,6 @@
 import { type RefObject, useEffect } from 'react';
-import { EYE_DEFAULTS, type EyeMaterialImpl } from './materials/eyeMaterial';
+import { type EyeMaterialImpl } from './materials/eyeMaterial';
+import { EYE_DEFAULTS } from './materials/eyeUniforms';
 import { folder, useControls } from 'leva';
 
 export function useEyeMaterialControls(

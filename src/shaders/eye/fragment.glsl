@@ -95,8 +95,5 @@ void main() {
         color = mix(color, sclera, mask);
     }
 
-    gl_FragColor = vec4(color * background, 1.0);
-
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
+    csm_DiffuseColor = vec4(color * background, 1.0);
 }

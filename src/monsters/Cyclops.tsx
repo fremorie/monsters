@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { type GLTF } from 'three-stdlib';
 
-import { EyeMaterial, eyeRadiusOf } from '../materials/eyeMaterial';
+import { EyeMaterial } from '../materials/eyeMaterial';
+import { eyeRadiusOf } from '../materials/eyeUniforms';
 import { useBlink } from '../hooks/useBlink';
 import { useCyclopsEyeTracking } from '../hooks/useCyclopsEyeTracking';
 import { usePupilResponse } from '../hooks/usePupilResponse';
@@ -73,16 +74,15 @@ export function Cyclops() {
                 geometry={nodes.Eye002.geometry}
                 position={[0, 4.619, 3.928]}
             >
-                <eyeMaterial
-                    key={EyeMaterial.key}
-                    uPupilRadius={0.15}
-                    uPupilDilation={0.58}
-                    uIrisRadius={0.85}
-                    uEyeRadius={eyeRadiusOf(nodes.Eye002.geometry)}
-                    uNoiseColor={new THREE.Color('#c2ebff')}
-                    uCenterColor={new THREE.Color('#837048')}
-                    uStripesColor={new THREE.Color('#90a79b')}
-                    uVignetteStrength={1}
+                <EyeMaterial
+                    pupilRadius={0.15}
+                    pupilDilation={0.58}
+                    irisRadius={0.85}
+                    eyeRadius={eyeRadiusOf(nodes.Eye002.geometry)}
+                    noiseColor="#c2ebff"
+                    centerColor="#837048"
+                    stripesColor="#90a79b"
+                    vignetteStrength={1}
                 />
             </mesh>
         </group>
