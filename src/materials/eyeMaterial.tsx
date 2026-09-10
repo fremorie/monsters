@@ -12,7 +12,7 @@ export const EYE_DEFAULTS = {
     stripesColor: '#608079',
     scleraEdgeColor: '#b8564a',
     stripesNoiseStrength: 0.5,
-    scleraRedness: 0.65,
+    scleraRedness: 1.1,
     scleraRednessSpread: 1.2,
     pupilRadius: 0.22,
     pupilDilation: 0.48,
