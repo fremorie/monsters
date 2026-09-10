@@ -24,7 +24,9 @@ type GLTFResult = GLTF & {
 export function MrSlime() {
     const { nodes } = useGLTF('./MrSlime.glb') as unknown as GLTFResult;
 
-    const { topEyeLidRef, bottomEyeLidRef } = useBlink();
+    const { topEyeLidRef, bottomEyeLidRef } = useBlink({
+        interval: 9,
+    });
     const { eyeLeftRef, eyeRightRef } = useEyeTracking();
 
     usePupilResponse([eyeLeftRef, eyeRightRef], { label: 'MrSlime pupils' });
@@ -47,7 +49,7 @@ export function MrSlime() {
                 ref={topEyeLidRef}
                 geometry={nodes.TopLid003.geometry}
                 position={[1.869, 4.908, 5.979]}
-                rotation={[-0.2, 0, 0]}
+                rotation={[-0.8, 0, 0]}
                 material={bodyMaterial}
             />
 
@@ -55,7 +57,7 @@ export function MrSlime() {
                 ref={bottomEyeLidRef}
                 geometry={nodes.BottomLid003.geometry}
                 position={[1.869, 4.908, 5.979]}
-                rotation={[0.5, 0, 0]}
+                rotation={[0.4, 0, 0]}
                 material={bodyMaterial}
             />
 
