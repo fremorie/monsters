@@ -5,7 +5,6 @@ import { type GLTF } from 'three-stdlib';
 import { EyeMaterial } from '../materials/eyeMaterial';
 import { eyeRadiusOf } from '../materials/eyeUniforms';
 import { useBlink } from '../hooks/useBlink';
-import { useEyeControls } from '../hooks/useEyeControls';
 import { useEyeTracking } from '../hooks/useEyeTracking';
 import { usePupilResponse } from '../hooks/usePupilResponse';
 import { bodyMaterial } from '../materials/bodyMaterial';
@@ -40,10 +39,6 @@ export function MrSlime() {
     const { eyeLeftRef, eyeRightRef } = useEyeTracking();
 
     usePupilResponse([eyeLeftRef, eyeRightRef], { label: 'MrSlime pupils' });
-    useEyeControls([eyeLeftRef, eyeRightRef], {
-        label: 'MrSlime eyes',
-        ...EYE_PARAMETERS,
-    });
 
     return (
         <group
